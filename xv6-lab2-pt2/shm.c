@@ -78,9 +78,23 @@ return 1; //added to remove compiler warning -- you should decide what to return
 
 int shm_close(int id) {
 //you write this too!
+  int currId = -1;
+  int index = -1;
+  acquire(&(shm_table.lock));
+  for (int i = 0; i < 64; i++) {
+    currId = shm_table.shm_pages[i].id;
+    if (id == currId) {
+      shm_table.shm_pages[i].refcnt -= 1;
+      index = i;
+      goto release;
+    }
+  }
 
-
-
-
+  release:
+  if (index != -1 && shm_table.shm_pages[index].refcnt == 0) {
+    shm_table.shm_pages[index].id = 0;
+    shm_table.shm_pages[index].frame = 0;
+  }
+  release(&(shm_table.lock));
 return 0; //added to remove compiler warning -- you should decide what to return
 }
