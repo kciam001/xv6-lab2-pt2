@@ -15766,7 +15766,7 @@ int sys_shm_close(void) {
   return shm_close(id);
 801054c8:	83 ec 0c             	sub    $0xc,%esp
 801054cb:	ff 75 f4             	pushl  -0xc(%ebp)
-801054ce:	e8 4d 1c 00 00       	call   80107120 <shm_close>
+801054ce:	e8 5d 1c 00 00       	call   80107130 <shm_close>
 801054d3:	83 c4 10             	add    $0x10,%esp
 }
 801054d6:	c9                   	leave  
@@ -21341,7 +21341,7 @@ int shm_open(int id, char **pointer) {
   //cprintf("In Lock\n");
   for (int i=0; i < 64; i++) {
 80106fd0:	31 c0                	xor    %eax,%eax
-80106fd2:	eb 19                	jmp    80106fed <shm_open+0x4d>
+80106fd2:	eb 1d                	jmp    80106ff1 <shm_open+0x51>
 80106fd4:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
       }
       shm_table.shm_pages[i].refcnt += 1;
@@ -21362,243 +21362,257 @@ int shm_open(int id, char **pointer) {
 80106fe2:	83 c0 01             	add    $0x1,%eax
 80106fe5:	83 c2 0c             	add    $0xc,%edx
 80106fe8:	83 f8 40             	cmp    $0x40,%eax
-80106feb:	74 73                	je     80107060 <shm_open+0xc0>
+80106feb:	0f 84 8f 00 00 00    	je     80107080 <shm_open+0xe0>
     currId = shm_table.shm_pages[i].id;
-80106fed:	8b 0a                	mov    (%edx),%ecx
+80106ff1:	8b 0a                	mov    (%edx),%ecx
     if (id == currId){
-80106fef:	39 f1                	cmp    %esi,%ecx
-80106ff1:	75 e5                	jne    80106fd8 <shm_open+0x38>
+80106ff3:	39 f1                	cmp    %esi,%ecx
+80106ff5:	75 e1                	jne    80106fd8 <shm_open+0x38>
       uint va = PGROUNDUP(curproc->sz); 
       char * frame = shm_table.shm_pages[i].frame;
       if (mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) <0) {
-80106ff3:	8b 7d e4             	mov    -0x1c(%ebp),%edi
+80106ff7:	8b 7d e4             	mov    -0x1c(%ebp),%edi
   //cprintf("In Lock\n");
   for (int i=0; i < 64; i++) {
     currId = shm_table.shm_pages[i].id;
     if (id == currId){
       uint va = PGROUNDUP(curproc->sz); 
       char * frame = shm_table.shm_pages[i].frame;
-80106ff6:	8d 04 40             	lea    (%eax,%eax,2),%eax
+80106ffa:	8d 04 40             	lea    (%eax,%eax,2),%eax
       if (mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) <0) {
-80106ff9:	83 ec 0c             	sub    $0xc,%esp
-80106ffc:	8b 37                	mov    (%edi),%esi
-80106ffe:	6a 06                	push   $0x6
-80107000:	89 75 e4             	mov    %esi,-0x1c(%ebp)
-80107003:	8d 9e ff 0f 00 00    	lea    0xfff(%esi),%ebx
+80106ffd:	83 ec 0c             	sub    $0xc,%esp
+80107000:	8b 37                	mov    (%edi),%esi
+80107002:	6a 06                	push   $0x6
+80107004:	89 75 e0             	mov    %esi,-0x20(%ebp)
+80107007:	8d 9e ff 0f 00 00    	lea    0xfff(%esi),%ebx
   //cprintf("In Lock\n");
   for (int i=0; i < 64; i++) {
     currId = shm_table.shm_pages[i].id;
     if (id == currId){
       uint va = PGROUNDUP(curproc->sz); 
       char * frame = shm_table.shm_pages[i].frame;
-80107009:	8d 34 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%esi
+8010700d:	8d 34 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%esi
       if (mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) <0) {
-80107010:	8b 46 38             	mov    0x38(%esi),%eax
-80107013:	81 e3 00 f0 ff ff    	and    $0xfffff000,%ebx
-80107019:	05 00 00 00 80       	add    $0x80000000,%eax
-8010701e:	50                   	push   %eax
-8010701f:	68 00 10 00 00       	push   $0x1000
-80107024:	53                   	push   %ebx
-80107025:	ff 77 04             	pushl  0x4(%edi)
-80107028:	e8 c3 f7 ff ff       	call   801067f0 <mappages>
-8010702d:	83 c4 20             	add    $0x20,%esp
-80107030:	85 c0                	test   %eax,%eax
-80107032:	0f 88 c9 00 00 00    	js     80107101 <shm_open+0x161>
+80107014:	8b 46 38             	mov    0x38(%esi),%eax
+80107017:	81 e3 00 f0 ff ff    	and    $0xfffff000,%ebx
+8010701d:	05 00 00 00 80       	add    $0x80000000,%eax
+80107022:	50                   	push   %eax
+80107023:	68 00 10 00 00       	push   $0x1000
+80107028:	53                   	push   %ebx
+80107029:	ff 77 04             	pushl  0x4(%edi)
+8010702c:	e8 bf f7 ff ff       	call   801067f0 <mappages>
+80107031:	83 c4 20             	add    $0x20,%esp
+80107034:	85 c0                	test   %eax,%eax
+80107036:	0f 88 cc 00 00 00    	js     80107108 <shm_open+0x168>
         release(&(shm_table.lock));
         panic("Messed up\n");
       }
       shm_table.shm_pages[i].refcnt += 1;
       *pointer = (char*)va;
-80107038:	8b 45 0c             	mov    0xc(%ebp),%eax
+8010703c:	8b 45 0c             	mov    0xc(%ebp),%eax
       char * frame = shm_table.shm_pages[i].frame;
       if (mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) <0) {
         release(&(shm_table.lock));
         panic("Messed up\n");
       }
       shm_table.shm_pages[i].refcnt += 1;
-8010703b:	83 46 3c 01          	addl   $0x1,0x3c(%esi)
+8010703f:	83 46 3c 01          	addl   $0x1,0x3c(%esi)
       *pointer = (char*)va;
-8010703f:	89 18                	mov    %ebx,(%eax)
+80107043:	89 18                	mov    %ebx,(%eax)
   }
   *pointer = (char*)va;
-  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
+  //curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
   goto release;
   release:
+  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
+80107045:	8b 7d e4             	mov    -0x1c(%ebp),%edi
   release(&(shm_table.lock));
-80107041:	83 ec 0c             	sub    $0xc,%esp
-80107044:	68 c0 54 11 80       	push   $0x801154c0
-80107049:	e8 72 d3 ff ff       	call   801043c0 <release>
+80107048:	83 ec 0c             	sub    $0xc,%esp
+  }
+  *pointer = (char*)va;
+  //curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
+  goto release;
+  release:
+  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
+8010704b:	8b 07                	mov    (%edi),%eax
+8010704d:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+80107050:	05 ff 0f 00 00       	add    $0xfff,%eax
+80107055:	25 00 f0 ff ff       	and    $0xfffff000,%eax
+8010705a:	05 00 10 00 00       	add    $0x1000,%eax
+8010705f:	89 07                	mov    %eax,(%edi)
+  release(&(shm_table.lock));
+80107061:	68 c0 54 11 80       	push   $0x801154c0
+80107066:	e8 55 d3 ff ff       	call   801043c0 <release>
 //cprintf("Out of Lock\n");
 return 1; //added to remove compiler warning -- you should decide what to return
 
 }
-8010704e:	8d 65 f4             	lea    -0xc(%ebp),%esp
-80107051:	b8 01 00 00 00       	mov    $0x1,%eax
-80107056:	5b                   	pop    %ebx
-80107057:	5e                   	pop    %esi
-80107058:	5f                   	pop    %edi
-80107059:	5d                   	pop    %ebp
-8010705a:	c3                   	ret    
-8010705b:	90                   	nop
-8010705c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+8010706b:	8d 65 f4             	lea    -0xc(%ebp),%esp
+8010706e:	b8 01 00 00 00       	mov    $0x1,%eax
+80107073:	5b                   	pop    %ebx
+80107074:	5e                   	pop    %esi
+80107075:	5f                   	pop    %edi
+80107076:	5d                   	pop    %ebp
+80107077:	c3                   	ret    
+80107078:	90                   	nop
+80107079:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
     if (foundId == -1 && currId == 0) {
       foundId = currId;
     }
   }
   //cprintf("Here now?\n");
   shm_table.shm_pages[foundId].id = id;
-80107060:	8d 04 5b             	lea    (%ebx,%ebx,2),%eax
-80107063:	8d 1c 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%ebx
-8010706a:	89 73 34             	mov    %esi,0x34(%ebx)
+80107080:	8d 04 5b             	lea    (%ebx,%ebx,2),%eax
+80107083:	8d 1c 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%ebx
+8010708a:	89 73 34             	mov    %esi,0x34(%ebx)
   char * frame = kalloc();
-8010706d:	e8 1e b4 ff ff       	call   80102490 <kalloc>
+8010708d:	e8 fe b3 ff ff       	call   80102490 <kalloc>
   memset(frame, 0, PGSIZE);
-80107072:	83 ec 04             	sub    $0x4,%esp
+80107092:	83 ec 04             	sub    $0x4,%esp
       foundId = currId;
     }
   }
   //cprintf("Here now?\n");
   shm_table.shm_pages[foundId].id = id;
   char * frame = kalloc();
-80107075:	89 c6                	mov    %eax,%esi
+80107095:	89 c6                	mov    %eax,%esi
   memset(frame, 0, PGSIZE);
-80107077:	68 00 10 00 00       	push   $0x1000
-8010707c:	6a 00                	push   $0x0
-8010707e:	50                   	push   %eax
-8010707f:	e8 8c d3 ff ff       	call   80104410 <memset>
+80107097:	68 00 10 00 00       	push   $0x1000
+8010709c:	6a 00                	push   $0x0
+8010709e:	50                   	push   %eax
+8010709f:	e8 6c d3 ff ff       	call   80104410 <memset>
   shm_table.shm_pages[foundId].frame = frame;
   shm_table.shm_pages[foundId].refcnt = 1;
   uint va = PGROUNDUP(curproc->sz);
   if(mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) < 0){
-80107084:	8b 7d e4             	mov    -0x1c(%ebp),%edi
+801070a4:	8b 7d e4             	mov    -0x1c(%ebp),%edi
   }
   //cprintf("Here now?\n");
   shm_table.shm_pages[foundId].id = id;
   char * frame = kalloc();
   memset(frame, 0, PGSIZE);
   shm_table.shm_pages[foundId].frame = frame;
-80107087:	89 73 38             	mov    %esi,0x38(%ebx)
+801070a7:	89 73 38             	mov    %esi,0x38(%ebx)
   shm_table.shm_pages[foundId].refcnt = 1;
-8010708a:	c7 43 3c 01 00 00 00 	movl   $0x1,0x3c(%ebx)
+801070aa:	c7 43 3c 01 00 00 00 	movl   $0x1,0x3c(%ebx)
   uint va = PGROUNDUP(curproc->sz);
   if(mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) < 0){
-80107091:	8b 07                	mov    (%edi),%eax
-80107093:	c7 04 24 06 00 00 00 	movl   $0x6,(%esp)
-8010709a:	8d 98 ff 0f 00 00    	lea    0xfff(%eax),%ebx
-801070a0:	89 45 e0             	mov    %eax,-0x20(%ebp)
-801070a3:	8d 86 00 00 00 80    	lea    -0x80000000(%esi),%eax
-801070a9:	81 e3 00 f0 ff ff    	and    $0xfffff000,%ebx
-801070af:	50                   	push   %eax
-801070b0:	68 00 10 00 00       	push   $0x1000
-801070b5:	53                   	push   %ebx
-801070b6:	ff 77 04             	pushl  0x4(%edi)
-801070b9:	e8 32 f7 ff ff       	call   801067f0 <mappages>
-801070be:	83 c4 20             	add    $0x20,%esp
-801070c1:	85 c0                	test   %eax,%eax
-801070c3:	78 23                	js     801070e8 <shm_open+0x148>
+801070b1:	8b 07                	mov    (%edi),%eax
+801070b3:	c7 04 24 06 00 00 00 	movl   $0x6,(%esp)
+801070ba:	8d 98 ff 0f 00 00    	lea    0xfff(%eax),%ebx
+801070c0:	89 45 e0             	mov    %eax,-0x20(%ebp)
+801070c3:	8d 86 00 00 00 80    	lea    -0x80000000(%esi),%eax
+801070c9:	81 e3 00 f0 ff ff    	and    $0xfffff000,%ebx
+801070cf:	50                   	push   %eax
+801070d0:	68 00 10 00 00       	push   $0x1000
+801070d5:	53                   	push   %ebx
+801070d6:	ff 77 04             	pushl  0x4(%edi)
+801070d9:	e8 12 f7 ff ff       	call   801067f0 <mappages>
+801070de:	83 c4 20             	add    $0x20,%esp
+801070e1:	85 c0                	test   %eax,%eax
+801070e3:	78 0a                	js     801070ef <shm_open+0x14f>
     release(&(shm_table.lock));
     panic("Messed up!\n");
   }
   *pointer = (char*)va;
-  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
-801070c5:	8b 7d e4             	mov    -0x1c(%ebp),%edi
-  uint va = PGROUNDUP(curproc->sz);
-  if(mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) < 0){
-    release(&(shm_table.lock));
-    panic("Messed up!\n");
-  }
-  *pointer = (char*)va;
-801070c8:	8b 45 0c             	mov    0xc(%ebp),%eax
-801070cb:	89 18                	mov    %ebx,(%eax)
-  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
-801070cd:	8b 07                	mov    (%edi),%eax
-801070cf:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-801070d2:	05 ff 0f 00 00       	add    $0xfff,%eax
-801070d7:	25 00 f0 ff ff       	and    $0xfffff000,%eax
-801070dc:	05 00 10 00 00       	add    $0x1000,%eax
-801070e1:	89 07                	mov    %eax,(%edi)
+801070e5:	8b 45 0c             	mov    0xc(%ebp),%eax
+801070e8:	89 18                	mov    %ebx,(%eax)
+  //curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
   goto release;
-801070e3:	e9 59 ff ff ff       	jmp    80107041 <shm_open+0xa1>
+801070ea:	e9 56 ff ff ff       	jmp    80107045 <shm_open+0xa5>
   memset(frame, 0, PGSIZE);
   shm_table.shm_pages[foundId].frame = frame;
   shm_table.shm_pages[foundId].refcnt = 1;
   uint va = PGROUNDUP(curproc->sz);
   if(mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) < 0){
     release(&(shm_table.lock));
-801070e8:	83 ec 0c             	sub    $0xc,%esp
-801070eb:	68 c0 54 11 80       	push   $0x801154c0
-801070f0:	e8 cb d2 ff ff       	call   801043c0 <release>
+801070ef:	83 ec 0c             	sub    $0xc,%esp
+801070f2:	68 c0 54 11 80       	push   $0x801154c0
+801070f7:	e8 c4 d2 ff ff       	call   801043c0 <release>
     panic("Messed up!\n");
-801070f5:	c7 04 24 a8 7b 10 80 	movl   $0x80107ba8,(%esp)
-801070fc:	e8 6f 92 ff ff       	call   80100370 <panic>
+801070fc:	c7 04 24 a8 7b 10 80 	movl   $0x80107ba8,(%esp)
+80107103:	e8 68 92 ff ff       	call   80100370 <panic>
     currId = shm_table.shm_pages[i].id;
     if (id == currId){
       uint va = PGROUNDUP(curproc->sz); 
       char * frame = shm_table.shm_pages[i].frame;
       if (mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(frame), PTE_W|PTE_U) <0) {
         release(&(shm_table.lock));
-80107101:	83 ec 0c             	sub    $0xc,%esp
-80107104:	68 c0 54 11 80       	push   $0x801154c0
-80107109:	e8 b2 d2 ff ff       	call   801043c0 <release>
+80107108:	83 ec 0c             	sub    $0xc,%esp
+8010710b:	68 c0 54 11 80       	push   $0x801154c0
+80107110:	e8 ab d2 ff ff       	call   801043c0 <release>
         panic("Messed up\n");
-8010710e:	c7 04 24 9d 7b 10 80 	movl   $0x80107b9d,(%esp)
-80107115:	e8 56 92 ff ff       	call   80100370 <panic>
-8010711a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+80107115:	c7 04 24 9d 7b 10 80 	movl   $0x80107b9d,(%esp)
+8010711c:	e8 4f 92 ff ff       	call   80100370 <panic>
+80107121:	eb 0d                	jmp    80107130 <shm_close>
+80107123:	90                   	nop
+80107124:	90                   	nop
+80107125:	90                   	nop
+80107126:	90                   	nop
+80107127:	90                   	nop
+80107128:	90                   	nop
+80107129:	90                   	nop
+8010712a:	90                   	nop
+8010712b:	90                   	nop
+8010712c:	90                   	nop
+8010712d:	90                   	nop
+8010712e:	90                   	nop
+8010712f:	90                   	nop
 
-80107120 <shm_close>:
+80107130 <shm_close>:
 return 1; //added to remove compiler warning -- you should decide what to return
 
 }
 
 
 int shm_close(int id) {
-80107120:	55                   	push   %ebp
-80107121:	89 e5                	mov    %esp,%ebp
-80107123:	53                   	push   %ebx
-80107124:	83 ec 10             	sub    $0x10,%esp
-80107127:	8b 5d 08             	mov    0x8(%ebp),%ebx
+80107130:	55                   	push   %ebp
+80107131:	89 e5                	mov    %esp,%ebp
+80107133:	53                   	push   %ebx
+80107134:	83 ec 10             	sub    $0x10,%esp
+80107137:	8b 5d 08             	mov    0x8(%ebp),%ebx
 //you write this too!
   int currId = -1;
   int index = -1;
   acquire(&(shm_table.lock));
-8010712a:	68 c0 54 11 80       	push   $0x801154c0
-8010712f:	e8 6c d1 ff ff       	call   801042a0 <acquire>
-80107134:	ba f4 54 11 80       	mov    $0x801154f4,%edx
-80107139:	83 c4 10             	add    $0x10,%esp
+8010713a:	68 c0 54 11 80       	push   $0x801154c0
+8010713f:	e8 5c d1 ff ff       	call   801042a0 <acquire>
+80107144:	ba f4 54 11 80       	mov    $0x801154f4,%edx
+80107149:	83 c4 10             	add    $0x10,%esp
   for (int i = 0; i < 64; i++) {
-8010713c:	31 c0                	xor    %eax,%eax
-8010713e:	eb 0b                	jmp    8010714b <shm_close+0x2b>
-80107140:	83 c0 01             	add    $0x1,%eax
-80107143:	83 c2 0c             	add    $0xc,%edx
-80107146:	83 f8 40             	cmp    $0x40,%eax
-80107149:	74 22                	je     8010716d <shm_close+0x4d>
+8010714c:	31 c0                	xor    %eax,%eax
+8010714e:	eb 0b                	jmp    8010715b <shm_close+0x2b>
+80107150:	83 c0 01             	add    $0x1,%eax
+80107153:	83 c2 0c             	add    $0xc,%edx
+80107156:	83 f8 40             	cmp    $0x40,%eax
+80107159:	74 22                	je     8010717d <shm_close+0x4d>
     currId = shm_table.shm_pages[i].id;
     if (id == currId) {
-8010714b:	39 1a                	cmp    %ebx,(%edx)
-8010714d:	75 f1                	jne    80107140 <shm_close+0x20>
+8010715b:	39 1a                	cmp    %ebx,(%edx)
+8010715d:	75 f1                	jne    80107150 <shm_close+0x20>
       shm_table.shm_pages[i].refcnt -= 1;
-8010714f:	8d 04 40             	lea    (%eax,%eax,2),%eax
-80107152:	8d 14 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%edx
+8010715f:	8d 04 40             	lea    (%eax,%eax,2),%eax
+80107162:	8d 14 85 c0 54 11 80 	lea    -0x7feeab40(,%eax,4),%edx
       goto release;
     }
   }
 
   release:
   if (index != -1 && shm_table.shm_pages[index].refcnt == 0) {
-80107159:	83 6a 3c 01          	subl   $0x1,0x3c(%edx)
-8010715d:	75 0e                	jne    8010716d <shm_close+0x4d>
+80107169:	83 6a 3c 01          	subl   $0x1,0x3c(%edx)
+8010716d:	75 0e                	jne    8010717d <shm_close+0x4d>
     shm_table.shm_pages[index].id = 0;
-8010715f:	c7 42 34 00 00 00 00 	movl   $0x0,0x34(%edx)
+8010716f:	c7 42 34 00 00 00 00 	movl   $0x0,0x34(%edx)
     shm_table.shm_pages[index].frame = 0;
-80107166:	c7 42 38 00 00 00 00 	movl   $0x0,0x38(%edx)
+80107176:	c7 42 38 00 00 00 00 	movl   $0x0,0x38(%edx)
   }
   release(&(shm_table.lock));
-8010716d:	83 ec 0c             	sub    $0xc,%esp
-80107170:	68 c0 54 11 80       	push   $0x801154c0
-80107175:	e8 46 d2 ff ff       	call   801043c0 <release>
+8010717d:	83 ec 0c             	sub    $0xc,%esp
+80107180:	68 c0 54 11 80       	push   $0x801154c0
+80107185:	e8 36 d2 ff ff       	call   801043c0 <release>
 return 0; //added to remove compiler warning -- you should decide what to return
 }
-8010717a:	31 c0                	xor    %eax,%eax
-8010717c:	8b 5d fc             	mov    -0x4(%ebp),%ebx
-8010717f:	c9                   	leave  
-80107180:	c3                   	ret    
+8010718a:	31 c0                	xor    %eax,%eax
+8010718c:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+8010718f:	c9                   	leave  
+80107190:	c3                   	ret    

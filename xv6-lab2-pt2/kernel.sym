@@ -362,7 +362,7 @@
 8010569a alltraps
 801061e3 vector173
 80105f64 vector117
-80107120 shm_close
+80107130 shm_close
 80105e29 vector82
 8010642f vector222
 80105b9d vector8

@@ -66,9 +66,10 @@ int shm_open(int id, char **pointer) {
     panic("Messed up!\n");
   }
   *pointer = (char*)va;
-  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
+  //curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
   goto release;
   release:
+  curproc->sz = PGROUNDUP(curproc->sz) + PGSIZE;
   release(&(shm_table.lock));
 //cprintf("Out of Lock\n");
 return 1; //added to remove compiler warning -- you should decide what to return
